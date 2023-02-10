@@ -7,6 +7,12 @@ const picSchema = new Schema(
       required: [true, 'A valid image is required.'],
       unique: true,
     },
+    description: {
+      type: String,
+    },
+    hashtags: {
+      type: [String]
+    },
     likes: {
       type: [Schema.Types.ObjectId ],
       ref: "Profile"
@@ -16,8 +22,7 @@ const picSchema = new Schema(
         ref: "Profile"
       }
   },
-  {
-    // this second object adds extra properties: `createdAt` and `updatedAt`    
+  {   
     timestamps: true
   }
 );

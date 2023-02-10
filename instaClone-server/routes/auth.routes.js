@@ -63,7 +63,7 @@ router.post('/signup', (req, res, next) => {
 // POST  /auth/login
 router.post('/login', (req, res, next) => {
   const { email, password } = req.body;
- 
+ console.log(email)
   // Check if email or password are provided as empty string 
   if (email === '' || password === '') {
     res.status(400).json({ message: "Provide email and password." });
@@ -85,10 +85,10 @@ router.post('/login', (req, res, next) => {
  
       if (passwordCorrect) {
         // Deconstruct the user object to omit the password
-        const { _id, email } = foundUser;
+        const { _id, email, profile } = foundUser;
         
         // Create an object that will be set as the token payload
-        const payload = { _id, email };
+        const payload = { _id, email, profile};
  
         // Create and sign the token
         const authToken = jwt.sign( 
@@ -110,7 +110,7 @@ router.post('/login', (req, res, next) => {
  
  
 // GET  /auth/verify
-router.get('/verify', isAuthenticated, (req, res, next) => {       // <== CREATE NEW ROUTE
+router.get('/verify', isAuthenticated, (req, res, next) => {  
  
   // If JWT token is valid the payload gets decoded by the
   // isAuthenticated middleware and made available on `req.payload`

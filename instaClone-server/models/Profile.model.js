@@ -8,6 +8,17 @@ const profileSchema = new Schema(
       unique: true,
       trim: true
     },
+    bio:{
+      type: String,
+    },
+    avatar: {
+      type: String,
+      default: "../assets/def-profile.png",
+    },
+    owner: {
+      type: Schema.Types.ObjectId ,
+      ref: "User"
+    },
     pics: {
       type: [Schema.Types.ObjectId ],
       ref: "Pic"
@@ -15,10 +26,13 @@ const profileSchema = new Schema(
     followers: {
         type: [Schema.Types.ObjectId ],
         ref: "Profile"
-      }
+      },
+    followed: {
+        type: [Schema.Types.ObjectId ],
+        ref: "Profile"
+    }
   },
-  {
-    // this second object adds extra properties: `createdAt` and `updatedAt`    
+  {   
     timestamps: true
   }
 );

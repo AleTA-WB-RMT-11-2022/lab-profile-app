@@ -14,7 +14,7 @@ const userSchema = new Schema(
       required: [true, 'Password is required.']
     },
     profile: {
-      type: Schema.Types.ObjectId ,
+      type: [Schema.Types.ObjectId] ,
       ref: "Profile"
     }
   },
