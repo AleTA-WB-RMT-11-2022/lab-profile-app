@@ -2,7 +2,7 @@ import React, { Component } from "react";
 
 class CloudinaryUploadWidget extends Component {
   componentDidMount() {
-    const cloudName = "hzxyensd5"; // replace with your own cloud name
+    const cloudName = `${process.env.CLOUD_NAME}`; // replace with your own cloud name
     const uploadPreset = "aoh4fpwm"; // replace with your own upload preset
 
     // Remove the comments from the code below to add
@@ -52,7 +52,7 @@ class CloudinaryUploadWidget extends Component {
       <button id="upload_widget" className="cloudinary-button">
         Upload
       </button>
-      <img id="uploadedimage" src=""/>
+      <img id="uploadedimage" src="" alt="last-upload"/>
       </>
     );
   }

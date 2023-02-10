@@ -1,27 +1,29 @@
 // import LoginButton from "./components/LoginButton";
 // import LogoutButton from "./components/LogoutButton";
 import { Route, Routes } from "react-router-dom";
-import {Cloudinary} from "@cloudinary/url-gen";
-import CloudinaryUploadWidget from "./components/CloudinaryUploadWidget";
+// import CloudinaryUploadWidget from "./components/CloudinaryUploadWidget";
+import "./App.css";
+import Navbar from "./components/Navbar";
+import HomePage from "./pages/HomePage";
+import Signup from "./components/Signup";
+import Login from "./components/Login";
+import Profile from "./pages/Profile";
+
 //import Signup from "./components/Signup";
 
 
 function App() {
 
-  const cld = new Cloudinary({
-    cloud: {
-      cloudName: 'daualsgyz'
-    }
-  });
-
   return (
-    <div className="App container">
-   {/* 
-   <LogoutButton/> */}
+    <div className="App container m-0">
+  <Navbar />
    <Routes >
-    <Route path="/" element={<CloudinaryUploadWidget/>} />
+   <Route path="/" element={ <HomePage /> } />
+   <Route path="/signup" element={ <Signup /> } />
+   <Route path="/login" element={<Login />} />
+   <Route path="/profile/:id" element={<Profile />} />
+    {/* <Route path="/" element={<CloudinaryUploadWidget/>} /> */}
     
-    {/* <Route path="/login" element={<LoginButton/>} /> */}
    </Routes>
    
     </div>

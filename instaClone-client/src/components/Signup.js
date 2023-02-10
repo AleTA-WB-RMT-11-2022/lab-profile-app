@@ -14,6 +14,7 @@ function Signup() {
   }
 
   const handleSubmit = (e) => {
+    console.log('CREDENTIALS ====> ', credentials)
     e.preventDefault()
     axios
       .post(`${process.env.REACT_APP_API_URL}/auth/signup`, credentials)
