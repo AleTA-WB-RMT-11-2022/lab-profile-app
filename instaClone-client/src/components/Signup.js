@@ -19,6 +19,7 @@ function Signup() {
     axios
       .post(`${process.env.REACT_APP_API_URL}/auth/signup`, credentials)
       .then(() => {
+        setCredentials({})
         navigate("/login");
       })
       .catch((error) => {
@@ -74,7 +75,7 @@ function Signup() {
           Submit
         </button>
 
-        {errorMessage && <p className="">- {errorMessage} -</p>}
+        {errorMessage && <p className="text-danger">- {errorMessage} -</p>}
       </form>
     </div>
   );

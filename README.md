@@ -4,5 +4,6 @@ backend:
 - cloudinary
 - Nodemailer
 - Passport.js
-- signUP 
+
+
 

@@ -4,26 +4,25 @@ const picSchema = new Schema(
   {
     pic: {
       type: String,
-      required: [true, 'A valid image is required.'],
-      unique: true,
+      required: [true, "A valid image is required."],
     },
     description: {
       type: String,
     },
     hashtags: {
-      type: [String]
+      type: [String],
     },
     likes: {
-      type: [Schema.Types.ObjectId ],
-      ref: "Profile"
+      type: [Schema.Types.ObjectId],
+      ref: "Profile",
     },
     owner: {
-        type: Schema.Types.ObjectId,
-        ref: "Profile"
-      }
+      type: Schema.Types.ObjectId,
+      ref: "Profile",
+    },
   },
-  {   
-    timestamps: true
+  {
+    timestamps: true,
   }
 );
 

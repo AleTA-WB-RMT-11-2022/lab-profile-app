@@ -6,7 +6,7 @@ const Pic = require("../models/Pic.model.js");
 const { isAuthenticated } = require("../middleware/jwt.middleware.js");
 
 // create a new Profile
-router.post("/profile", isAuthenticated, (req, res, next) => {
+router.post("/profiles", isAuthenticated, (req, res, next) => {
   // check if profileName is aready taken --> needs to be unique
   Profile.findOne({ profileName: req.body.profileName })
     .then((foundProfile) => {
@@ -19,7 +19,7 @@ router.post("/profile", isAuthenticated, (req, res, next) => {
     .then((newProfile) => {
       User.findById(req.payload._id)
         .then((user) => {
-          user.profile.push(newProfile._id);
+          user.profiles.push(newProfile._id);
           user.save();
         })
         .then(() => res.json(newProfile));
@@ -27,18 +27,15 @@ router.post("/profile", isAuthenticated, (req, res, next) => {
     .catch((err) => console.log("error creating new profile", err));
 });
 
-//🔴 get all Profiles by query without populate followers and pics( frontend shows only length )
+// get all Profiles by query object, without populate followers and pics( frontend shows only length )
 router.get("/profiles", isAuthenticated, (req, res, next) => {
-  const { owner } = req.query;
-  console.log(req.query)
-  Profile.find({query})
-    .then((res) => res.json(res))
-    .catch((err) => console.log(`error getting profile ${req.query}`, err));
+  Profile.find({owner: req.payload._id})
+    .then((response) => res.json(response))
+    .catch((err) => console.log(`error getting profiles`, err));
 });
 
 // get all data for specific Profile (populate data for followers, followed and pics realated)
-router.get("/profile/:profileId", isAuthenticated, (req, res, next) => {
-  console.log("profileId ===> ", req.params)
+router.get("/:profileId", isAuthenticated, (req, res, next) => {
   const { profileId } = req.params;
   if (!mongoose.Types.ObjectId.isValid(profileId)) {
     res.status(400).json({ message: "Specified profile id is not valid" });
@@ -46,15 +43,16 @@ router.get("/profile/:profileId", isAuthenticated, (req, res, next) => {
   }
 
   Profile.findById(profileId)
-    .populate("pics", "followers", "followed")
+    .populate("pics", "followers", )// "followed" and "followers" can't populate on same line same Ref --> "Profile"
+    .populate("followed")
     .then((profile) => {
       console.log(profile)
-      res.json(profile)})
-    .catch((err) => console.log(`error getting profile ${req.params}`, err));
+      res.json(profile)})     
+    .catch((err) => console.log(`error getting profile ${profileId}`, err));
 });
 
 //update specific Profile
-router.put("/profile/:profileId/edit", isAuthenticated, (req, res, next) => {
+router.put("/:profileId/edit", isAuthenticated, (req, res, next) => {
   const { profileId } = req.params;
   if (!mongoose.Types.ObjectId.isValid(profileId)) {
     res.status(400).json({ message: "Specified profile id is not valid" });
@@ -67,7 +65,7 @@ router.put("/profile/:profileId/edit", isAuthenticated, (req, res, next) => {
 });
 
 // delete Profile, remove profile from user[profiles] and delete all pics related to Profile
-router.delete("/profile/:profileId", isAuthenticated, (req, res, next) => {
+router.delete("/:profileId", isAuthenticated, (req, res, next) => {
   const { profileId } = req.params;
   if (!mongoose.Types.ObjectId.isValid(profileId)) {
     res.status(400).json({ message: "Specified profile id is not valid" });
@@ -82,7 +80,9 @@ router.delete("/profile/:profileId", isAuthenticated, (req, res, next) => {
           .then(() => res.status(200).json({ message: "Profile successfully deleted" }))
       })
     })
-    .catch((err) => console.log("error deleting profile", err));
+    .catch((err) => {
+      res.status(400).json({ message: "Something went wrong..." })
+    })
 });
 
 module.exports = router;

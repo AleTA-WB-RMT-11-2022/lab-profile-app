@@ -1,40 +1,45 @@
 import { useState, useContext } from "react";
 import axios from "axios";
-import { useNavigate } from "react-router-dom";
 import { AuthContext } from "../context/auth.context";
 
-function CreateProfile() {
-  const [profile, setProfile] = useState({})
+function CreateProfile({getProfiles}) {
+  const [newProfile, setNewProfile] = useState({})
+  const [picLoading, setPicLoading] = useState(false)
+  const [errorMessage, setErrorMessage] = useState(undefined);
   const {isLoading} = useContext(AuthContext)
-  const naviagate = useNavigate()
   const storedToken = localStorage.getItem("authToken")
 
 // profile fields: profileName - bio - avatar
   const handleSubmit = (e) => {
     e.preventDefault()
-    axios.post(`${process.env.REACT_APP_API_URL}/api/profile`, profile, { headers: { Authorization: `Bearer ${storedToken}` } })
-    .then((res) => {
-        console.log(res.data)
-        setProfile({})
-        naviagate(`/profile/${res.data._id}`)
+    axios.post(`${process.env.REACT_APP_API_URL}/api/profiles`, newProfile, { headers: { Authorization: `Bearer ${storedToken}` } })
+    .then(() => {
+         setNewProfile({})
+         getProfiles()
+       
     })
+    .catch((error) => {
+      const errorDescription = error.response.data.message;
+      setErrorMessage(errorDescription);
+    });
   }
 
   const handleChange = (e) => {
+    setErrorMessage(undefined)
     const name = e.target.name
     const value = e.target.value
-    setProfile(values => ({...values, [name]: value}))
+    setNewProfile(() => ({...newProfile, [name]: value}))
   }
 
   const handleFileUpload = (e) => {
     e.preventDefault()
-    console.log("The file to be uploaded is: ", e.target.files[0]);
+    setPicLoading(true)
     const uploadData = new FormData();
     uploadData.append("image", e.target.files[0])
     axios.post(`${process.env.REACT_APP_API_URL}/api/upload`, uploadData, { headers: { Authorization: `Bearer ${storedToken}` } })
     .then((response)=>{
-      console.log(response.data.image)
-      setProfile(() => ({...profile, avatar: response.data.image}))    
+      setNewProfile(() => ({...newProfile, avatar: response.data.image})) 
+      setPicLoading(false)   
   })
 } 
 if(isLoading){
@@ -50,7 +55,7 @@ if(isLoading){
         <input
           type="text"
           name="profileName"
-          value={profile.profileName}
+          value={newProfile.profileName}
           onChange={handleChange}
           className="form-control"
           placeholder="GattaMorta68"
@@ -63,7 +68,7 @@ if(isLoading){
       <div className="col-auto">
       <label className="form-label">
           Tell us about yoursel
-        <input type="text" name="bio" value={profile.bio} onChange={handleChange} className="form-control" 
+        <input type="text" name="bio" value={newProfile.bio} onChange={handleChange} className="form-control" 
           maxLength="50" placeholder="I love..."/>  
         </label> 
       </div>
@@ -71,10 +76,12 @@ if(isLoading){
         <label className="form-label">
           What abaut you?
           <input  type="file" name="image" className="form-control"  onChange={handleFileUpload}/>
+          {newProfile.avatar && <img src={newProfile.avatar} className="rounded" style={{width: "28px"}} alt={newProfile.profileName} />}
         </label>
         
       </div>
-      <button type="submit" className="btn btn-dark">Submit</button>
+      {!picLoading && <button type="submit" className="btn btn-dark">Submit</button>}
+      {errorMessage && <p className="text-danger">- {errorMessage} -</p>}
     </form>
     </div>
   );

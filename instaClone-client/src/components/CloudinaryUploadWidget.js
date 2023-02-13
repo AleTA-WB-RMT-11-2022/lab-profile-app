@@ -2,9 +2,9 @@ import React, { Component } from "react";
 
 class CloudinaryUploadWidget extends Component {
   componentDidMount() {
-    const cloudName = `${process.env.CLOUD_NAME}`; // replace with your own cloud name
-    const uploadPreset = "aoh4fpwm"; // replace with your own upload preset
-
+    const cloudName = 'insta-clone'//process.env.CLOUD_NAME // replace with your own cloud name
+    const uploadPreset = "preset1"; // replace with your own upload preset
+    // insta-clone
     // Remove the comments from the code below to add
     // additional functionality.
     // Note that these are only a few examples, to see
@@ -12,10 +12,10 @@ class CloudinaryUploadWidget extends Component {
     // can add see:
     //   https://cloudinary.com/documentation/upload_widget_reference
 
-    var myWidget = window.cloudinary.createUploadWidget(
+    const myWidget = window.cloudinary.createUploadWidget(
       {
         cloudName: cloudName,
-        uploadPreset: uploadPreset
+        uploadPreset: uploadPreset,
         // cropping: true, //add a cropping step
         // showAdvancedOptions: true,  //add advanced options (public_id and tag)
         // sources: [ "local", "url"], // restrict the upload sources to URL and local files
@@ -26,7 +26,7 @@ class CloudinaryUploadWidget extends Component {
         // clientAllowedFormats: ["images"], //restrict uploading to image files only
         // maxImageFileSize: 2000000,  //restrict file size to less than 2MB
         // maxImageWidth: 2000, //Scales the image down to a width of 2000 pixels before uploading
-        // theme: "purple", //change to a purple theme
+        theme: "purple", //change to a purple theme
       },
       (error, result) => {
         if (!error && result && result.event === "success") {
@@ -34,12 +34,15 @@ class CloudinaryUploadWidget extends Component {
           document
             .getElementById("uploadedimage")
             .setAttribute("src", result.info.secure_url);
+            
         }
       }
     );
     document.getElementById("upload_widget").addEventListener(
+      
       "click",
-      function () {
+      function (e) {
+        e.preventDefault()
         myWidget.open();
       },
       false
@@ -52,10 +55,11 @@ class CloudinaryUploadWidget extends Component {
       <button id="upload_widget" className="cloudinary-button">
         Upload
       </button>
-      <img id="uploadedimage" src="" alt="last-upload"/>
+
       </>
     );
   }
 }
 
 export default CloudinaryUploadWidget;
+

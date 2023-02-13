@@ -7,7 +7,8 @@ import Navbar from "./components/Navbar";
 import HomePage from "./pages/HomePage";
 import Signup from "./components/Signup";
 import Login from "./components/Login";
-import Profile from "./pages/Profile";
+import ProfilePage from "./pages/ProfilePage";
+import ProfilesPage from "./pages/ProfilesPage";
 
 //import Signup from "./components/Signup";
 
@@ -21,7 +22,8 @@ function App() {
    <Route path="/" element={ <HomePage /> } />
    <Route path="/signup" element={ <Signup /> } />
    <Route path="/login" element={<Login />} />
-   <Route path="/profile/:id" element={<Profile />} />
+   <Route path="/profiles" element={<ProfilesPage />} />
+   <Route path="/:profileId" element={<ProfilePage />} />
     {/* <Route path="/" element={<CloudinaryUploadWidget/>} /> */}
     
    </Routes>

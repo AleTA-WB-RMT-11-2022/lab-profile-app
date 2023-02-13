@@ -27,18 +27,10 @@ function Navbar () {
             <div className="collapse navbar-collapse" id="navbarText">
                 <ul className="navbar-nav me-auto mb-2 mb-md-0">
                    <li className="nav-item">
-                   <Link to= "/profile" className="nav-link me-3" >
-                   My Profile
-                   </Link>
+                   {isLoggedIn && <Link to= "/profiles" className="nav-link me-3" >
+                   My Profiles
+                   </Link>}
                    </li>
-              {/* <li className="nav-item ">
-                <a className="nav-link home-page-brand me-3" href="/events-create">Create an Event</a>
-              </li>
-              
-              <li className="nav-item">
-                <a className="nav-link home-page-brand" href="/user-events">My Events</a>
-              </li> */}
-              
                 </ul>
             
                 {isLoggedIn && <div className="dropdown-center">

@@ -24,7 +24,7 @@ function Login() {
         storeToken(res.data.authToken)
         authenticateUser()
         setCredentials({})
-        navigate("/");
+        navigate("/profiles");
       })
       .catch((error) => {
         const errorDescription = error.response.data.message;
@@ -49,7 +49,7 @@ function Login() {
       <div className="col-auto">
         <button type="submit" className="btn btn-dark mb-2">Confirm identity</button>
       </div>
-      {errorMessage && <p className="">- {errorMessage} -</p>}
+      {errorMessage && <p className="text-danger">- {errorMessage} -</p>}
     </form>
   </div>
   )
