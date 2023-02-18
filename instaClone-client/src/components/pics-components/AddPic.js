@@ -1,24 +1,29 @@
 import { useState, useContext } from "react";
 import axios from "axios";
 import { AuthContext } from "../../context/auth.context";
-import CloudinaryUploadWidget from "../CloudinaryUploadWidget";
+import WidgetUpload from "./WidgetUpload";
 
-function AddPic({ profileId, getProfiles }) {
-  const [newPic, setNewPic] = useState({});
-  const [picLoading, setPicLoading] = useState(false);
+function AddPic({ profileId, getProfile }) {
+  // const [pic, setPic] = useState(undefined);
+  // const [hashtags, setHashtags] = useState('');
+  // const [description, setDescription] = useState('');
+  const [item, setItem] = useState({})
   const [errorMessage, setErrorMessage] = useState(undefined);
   const { isLoading } = useContext(AuthContext);
   const storedToken = localStorage.getItem("authToken");
 
   const handleSubmit = (e) => {
     e.preventDefault();
+
+    console.log("new ITEM ", item);
     axios
-      .post(`${process.env.REACT_APP_API_URL}/api/pic/${profileId}`, newPic, {
+      .post(`${process.env.REACT_APP_API_URL}/api/pic/${profileId}`, item, {
         headers: { Authorization: `Bearer ${storedToken}` },
       })
       .then(() => {
-        setNewPic({});
-        getProfiles();
+        getProfile();
+        setErrorMessage(undefined);
+        setItem({description: '', hashtags: ''})
       })
       .catch((error) => {
         const errorDescription = error.response.data.message;
@@ -27,49 +32,27 @@ function AddPic({ profileId, getProfiles }) {
   };
 
   const handleChange = (e) => {
-    setErrorMessage(undefined);
-    const name = e.target.name;
-    const value = e.target.value;
-    setNewPic(() => ({ ...newPic, [name]: value }));
-  };
-
-  const handleFileUpload = (e) => {
     e.preventDefault();
-    setPicLoading(true);
-    const uploadData = new FormData();
-    uploadData.append("image", e.target.files[0]);
-    axios
-      .post(`${process.env.REACT_APP_API_URL}/api/upload`, uploadData, {
-        headers: { Authorization: `Bearer ${storedToken}` },
-      })
-      .then((response) => {
-        setNewPic(() => ({ ...newPic, avatar: response.data.image }));
-        setPicLoading(false);
-      });
-  };
+    setErrorMessage(undefined)
+    const name = e.target.name
+    const value = e.target.value
+    setItem((values) => ({...values, [name]: value}))
+  }
+
   if (isLoading) {
     return <p>loading</p>;
   }
 
   return (
     <div className="row align-items-center ms-2">
-      <form className="border mt-2 p-1" onSubmit={handleSubmit}>
+      <form
+        onSubmit={handleSubmit}
+        className="border mt-2 p-1 "
+        style={{ width: "50vh" }}
+      >
         <div className="col-auto">
           <label className="form-label">
-            <CloudinaryUploadWidget
-              name="profileName"
-              value={newPic.pic}
-              handleFileUpload={handleFileUpload}
-            />
-            <input
-              type="text"
-              name="hashtag"
-              value={newPic.hashtag}
-              onChange={handleChange}
-              className="form-control"
-              minLength="3"
-              maxLength="20"
-            />
+            <WidgetUpload setItem={setItem} />
           </label>
         </div>
         <div className="col-auto">
@@ -78,10 +61,8 @@ function AddPic({ profileId, getProfiles }) {
             <textarea
               type="text"
               name="description"
-              value={newPic.description}
-              onChange={() => {
-                handleChange();
-              }}
+              value={item.description}
+              onChange={handleChange}
               className="form-control"
               maxLength="50"
               placeholder="My summer in..."
@@ -90,19 +71,27 @@ function AddPic({ profileId, getProfiles }) {
         </div>
         <div className="col-auto">
           <label className="form-label">
-            What abaut you?
-            {/* <input  type="file" name="image" className="form-control"  onChange={handleFileUpload}/> */}
-            {newPic.pic && (
-              <img
-                src={newPic.pic}
-                className=""
-                style={{ width: "30px" }}
-                alt={newPic.hashtag}
-              />
-            )}
+            ###What about###
+            <textarea
+              type="text"
+              name="hashtags"
+              value={item.hashtags}
+              onChange={handleChange}
+              className="form-control"
+              maxLength="50"
+              placeholder="#summer"
+            />
           </label>
+          {item.pic && (
+            <img
+              src={item.pic}
+              className=""
+              style={{ width: "50px" }}
+              alt={item.description}
+            />
+          )}
         </div>
-        {!picLoading && (
+        {item.pic && (
           <button type="submit" className="btn btn-dark">
             Post
           </button>

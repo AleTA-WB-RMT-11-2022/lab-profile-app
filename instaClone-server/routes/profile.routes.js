@@ -43,11 +43,13 @@ router.get("/:profileId", isAuthenticated, (req, res, next) => {
   }
 
   Profile.findById(profileId)
-    .populate("pics", "followers", )// "followed" and "followers" can't populate on same line same Ref --> "Profile"
+    .populate({
+      path: 'pics',
+      options: { sort: { 'createdAt': -1 } } // last created first
+    })// "followed" and "followers" can't populate on same line same Ref --> "Profile"
+    .populate("followers")
     .populate("followed")
-    .then((profile) => {
-      console.log(profile)
-      res.json(profile)})     
+    .then((profile) => res.json(profile))     
     .catch((err) => console.log(`error getting profile ${profileId}`, err));
 });
 

@@ -8,9 +8,11 @@ const picSchema = new Schema(
     },
     description: {
       type: String,
+      default: '🖼',
     },
     hashtags: {
       type: [String],
+      default: ['🖼'],
     },
     likes: {
       type: [Schema.Types.ObjectId],

@@ -67,7 +67,7 @@ if(isLoading){
       </div>
       <div className="col-auto">
       <label className="form-label">
-          Tell us about yoursel
+          Tell about yoursel
         <input type="text" name="bio" value={newProfile.bio} onChange={handleChange} className="form-control" 
           maxLength="50" placeholder="I love..."/>  
         </label> 
