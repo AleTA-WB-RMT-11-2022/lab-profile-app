@@ -1,19 +1,13 @@
 const router = require("express").Router();
 const mongoose = require("mongoose");
-const Profile = require("../models/Profile.model.js");
-const Pic = require("../models/Pic.model.js");
-const { isAuthenticated } = require("../middleware/jwt.middleware.js");
+const Profile = require("../models/Profile.model");
+const Pic = require("../models/Pic.model");
+const { isAuthenticated } = require("../middleware/jwt.middleware");
+const getHashtagsArray = require("../utils/getHashtagsArray")
+const cleanEmptyStringKeys = require("../utils/cleanEmptyStringKeys")
 
 router.post("/pic/:profileId", isAuthenticated, (req, res, next) => {
   const { profileId } = req.params;
-  console.log(req.body)
-  const getHashtags = (string) => {
-    const hashtagArr = string
-      .split("#")
-      .map((hash) => hash.trim())
-      .filter((hash) => hash !== "");
-    return hashtagArr;
-  };
 
   if (!mongoose.Types.ObjectId.isValid(profileId)) {
     res.status(400).json({ message: "Specified profile id is not valid" });
@@ -21,8 +15,8 @@ router.post("/pic/:profileId", isAuthenticated, (req, res, next) => {
   }
 
   const newPic = {
-    ...req.body,
-    hashtags: getHashtags(req.body.hashtags),
+    ...cleanEmptyStringKeys(req.body),
+    hashtags: getHashtagsArray(req.body.hashtags),
     owner: profileId,
   };
 

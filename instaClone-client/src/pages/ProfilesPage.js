@@ -1,8 +1,9 @@
 import { useState, useContext, useEffect } from "react";
 import axios from "axios";
 import { AuthContext } from "../context/auth.context";
-import CreateProfile from "../components/CreateProfile";
+import CreateProfile from "../components/profile-components/CreateProfile";
 import { Link } from "react-router-dom";
+import SearchForm from "../components/profile-components/SearchForm";
 
 function ProfilesPage() {
   const [profiles, setProfiles] = useState([]);
@@ -58,6 +59,10 @@ function ProfilesPage() {
           <div className="col-4">
             <h2>Wanna create a new profile? 👇</h2>
             <CreateProfile getProfiles={getProfiles} />
+          </div>
+          <div className="col-4">
+            <h2>Search by...</h2>
+            <SearchForm />
           </div>
         </div>
       )}

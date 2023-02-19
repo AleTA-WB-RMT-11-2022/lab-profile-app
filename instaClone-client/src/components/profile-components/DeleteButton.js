@@ -1,7 +1,7 @@
 import { useState } from "react";
 import axios from "axios";
 import { useNavigate } from "react-router-dom";
-import DeleteProfileAlert from "./DeleteProfileAlert";
+//import DeleteProfileAlert from "./DeleteProfileAlert";
 
 function DeleteButton({_id, profileName}){
     const [alert, setAlert] = useState(false)
