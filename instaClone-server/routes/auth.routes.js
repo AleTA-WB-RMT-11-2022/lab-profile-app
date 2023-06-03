@@ -35,16 +35,13 @@ router.post("/signup", (req, res, next) => {
       });
     return;
   }
-
-  console.log("che cazzo", { email });
   // Check the users collection if a user with the same email already exists
   User.findOne({ email })
     .then((foundUser) => {
-      console.log("this email is new", {email});
       // If the user with the same username already exists, send an error response
       if (foundUser) {
         res.status(400).json({ message: "Email already exists." });
-        return;
+        return
       }
 
       // If the email is unique, proceed to hash the password
@@ -56,7 +53,6 @@ router.post("/signup", (req, res, next) => {
       return User.create({ email: email, password: hashedPassword });
     })
     .then((createdUser) => {
-      console.log("we create this motherF**r");
       // Deconstruct the newly created user object to omit the password
       // We should never expose passwords publicly
       const { email, _id } = createdUser;
@@ -76,7 +72,6 @@ router.post("/signup", (req, res, next) => {
 // POST  /auth/login
 router.post("/login", (req, res, next) => {
   const { email, password } = req.body;
-  console.log(email);
   // Check if email or password are provided as empty string
   if (email === "" || password === "") {
     res.status(400).json({ message: "Provide email and password." });

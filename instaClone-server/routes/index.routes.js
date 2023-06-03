@@ -3,6 +3,7 @@ const fileUploader = require("../config/cloudinary.config");
 const { isAuthenticated } = require("../middleware/jwt.middleware.js");
 
 router.get("/", (req, res, next) => {
+  console.log('Home')
   res.json("All good in here");
 });
 

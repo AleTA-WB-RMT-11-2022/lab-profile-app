@@ -7,13 +7,13 @@ const { isAuthenticated } = require("../middleware/jwt.middleware");
 const cleanEmptyStringKeys = require("../utils/cleanEmptyStringKeys")
 
 // create a new Profile
-router.post("/profiles", isAuthenticated, (req, res, next) => {
+router.post("/", isAuthenticated, (req, res, next) => {
   // check if profileName is aready taken --> needs to be unique
   Profile.findOne({ profileName: req.body.profileName })
     .then((foundProfile) => {
       if (foundProfile) {
-        res.status(400).json({ message: "Profile name already taken!" });
-        next();
+        res.status(401).json({ message: "Profile name already taken!" });
+        return;
       }
       return Profile.create({ ...cleanEmptyStringKeys(req.body) , owner: req.payload._id });
     })
@@ -21,18 +21,28 @@ router.post("/profiles", isAuthenticated, (req, res, next) => {
       User.findByIdAndUpdate(req.payload._id, { $push: { profile: newProfile._id } }, { new: true })
         .then(() => res.json(newProfile));
     })
-    .catch((err) => res.status(400).json({ message: "Profile not created" }));
+    .catch((err) => {
+      console.log("error creating profile", err)
+      res.status(400).json({ message: "Profile not created" })
+  });
 });
 
-// get all Profiles by query object, without populate followers and pics( frontend shows only length )
-router.get("/profiles", isAuthenticated, (req, res, next) => {
-  Profile.find({owner: req.payload._id})
-    .populate("followers")
-    .then((response) => res.json(response))
+// get all profiles but current user's , sorted by last updatd
+router.get("/", isAuthenticated, (req, res, next) => {
+  Profile.find({owner: { $nin: req.payload._id }} ).sort({ 'updatedAt': -1 })
+    .then((response) => {
+      res.json(response)})
     .catch((err) => console.log(`error getting profiles`, err));
 });
 
-// get all data for specific Profile (populate data for followers, followed and pics realated)
+// get all Profiles of current user, without populate followed and pics( frontend shows only length )
+router.get("/my-profiles", isAuthenticated, (req, res, next) => {
+  Profile.find({owner: req.payload._id})
+    .then((response) => res.json(response))
+    .catch((err) => console.log(`error getting my-profiles`, err));
+});
+
+// get all data for specific Profile (populate followers, followed and pics realated)
 router.get("/:profileId", isAuthenticated, (req, res, next) => {
   const { profileId } = req.params;
   if (!mongoose.Types.ObjectId.isValid(profileId)) {
@@ -59,7 +69,7 @@ router.put("/:profileId/edit", isAuthenticated, (req, res, next) => {
     return;
   }
 
-  Profile.findByIdAndUpdate(profileId, req.body, { new: true })
+  Profile.findByIdAndUpdate(profileId, ...cleanEmptyStringKeys(req.body), { new: true })
     .then((profile) => res.json(profile))
     .catch((err) => console.log(`error updating profile ${req.params}`, err));
 });

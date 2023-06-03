@@ -23,7 +23,9 @@ app.use("/auth", require("./routes/auth.routes"));
 
 app.use("/api", isAuthenticated, require("./routes/pic.routes"))
 
-app.use("/api", isAuthenticated, require("./routes/profile.routes"))
+app.use("/api/profiles", isAuthenticated, require("./routes/profile.routes"))
+
+app.use("/api", isAuthenticated, require("./routes/search.routes"))
 
 app.use("/api", isAuthenticated, require("./routes/follower.routes"))
 
