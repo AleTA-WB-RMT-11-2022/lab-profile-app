@@ -1,10 +1,10 @@
 function CheckBox ({ lable, name, checked, handleChange}) {
     return(
-        <div class="form-check form-check-inline">
-        <label class="form-check-label">
+        <div className="form-check form-check-inline">
+        <label className="form-check-label">
           {lable}
           <input
-            class="form-check-input"
+            className="form-check-input"
             type="checkbox"
             name={name}
             checked={checked}

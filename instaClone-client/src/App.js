@@ -4,11 +4,8 @@ import { Route, Routes } from "react-router-dom";
 import "./App.css";
 import Navbar from "./components/Navbar";
 import HomePage from "./pages/HomePage";
-import Signup from "./components/Signup";
-import Login from "./components/Login";
 import ProfilePage from "./pages/ProfilePage";
-import ProfilesPage from "./pages/ProfilesPage";
-import PicsPage from "./pages/PicsPage";
+import MyProfilesPage from "./pages/MyProfilesPage";
 
 function App() {
   return (
@@ -16,11 +13,8 @@ function App() {
       <Navbar />
       <Routes>
         <Route path="/" element={<HomePage />} />
-        <Route path="/signup" element={<Signup />} />
-        <Route path="/login" element={<Login />} />
-        <Route path="/profiles" element={<ProfilesPage />} />
+        <Route path="/my-profiles" element={<MyProfilesPage />} />        
         <Route path="/:profileId" element={<ProfilePage />} />
-        <Route path="/pics/:profileId" element={<PicsPage />} />
       </Routes>
     </div>
   );

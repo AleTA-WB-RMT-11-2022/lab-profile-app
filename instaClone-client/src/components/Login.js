@@ -1,13 +1,13 @@
 import { useState, useContext } from "react";
 import axios from "axios";
-import { useNavigate } from "react-router-dom";
 import { AuthContext } from "../context/auth.context";
+import { useNavigate } from "react-router-dom";
 
 function Login() {
-  const [credentials, setCredentials] = useState({});
+  const [credentials, setCredentials] = useState({email:"", password:""});
   const [errorMessage, setErrorMessage] = useState(undefined);
   const { storeToken, authenticateUser } = useContext(AuthContext);
-  const navigate = useNavigate();
+  const navigate = useNavigate()
 
   const handleChange = (event) => {
     const name = event.target.name;
@@ -24,7 +24,7 @@ function Login() {
         storeToken(res.data.authToken)
         authenticateUser()
         setCredentials({})
-        navigate("/profiles");
+        navigate("/my-profiles")
       })
       .catch((error) => {
         const errorDescription = error.response.data.message;
@@ -34,7 +34,7 @@ function Login() {
 
   return (
   <div className="row align-items-center ms-2">
-    <form className="col col-3 g-3 border mt-2 p-2" onSubmit={handleSubmit}>
+    <form className="g-3 border mt-2 p-2" onSubmit={handleSubmit}>
       <div className="col-auto">
         <label className="visually-hidden">Email</label>
         <div className="input-group mb-2">
