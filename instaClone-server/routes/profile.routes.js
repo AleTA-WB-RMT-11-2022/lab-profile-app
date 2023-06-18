@@ -15,16 +15,26 @@ router.post("/", isAuthenticated, (req, res, next) => {
         res.status(401).json({ message: "Profile name already taken!" });
         return;
       }
-      return Profile.create({ ...cleanEmptyStringKeys(req.body) , owner: req.payload._id });
+      return Profile.create({
+        ...cleanEmptyStringKeys(req.body),
+        owner: req.payload._id,
+      });
     })
     .then((newProfile) => {
-      User.findByIdAndUpdate(req.payload._id, { $push: { profile: newProfile._id } }, { new: true })
-        .then(() => res.json(newProfile));
+      return User.findByIdAndUpdate(
+        req.payload._id,
+        { $push: { profiles: newProfile._id } },
+        { new: true }
+      );
+    })
+    .then((updatedUser) => {
+      const { _id, email, profiles } = updatedUser
+      res.json({ _id, email, profiles })
     })
     .catch((err) => {
-      console.log("error creating profile", err)
-      res.status(400).json({ message: "Profile not created" })
-  });
+      console.log("error creating profile", err);
+      res.status(400).json({ message: "Profile not created" });
+    });
 });
 
 // get all profiles but current user's , sorted by last updatd
@@ -82,17 +92,24 @@ router.delete("/:profileId", isAuthenticated, (req, res, next) => {
     return;
   }
 
-  Profile.findByIdAndRemove(profileId)
+  return Profile.findByIdAndRemove(profileId)
     .then(() => {
-        User.findOneAndUpdate({ _id: req.payload._id }, { $pull: { profiles: profileId } }, { new: true })
-        .then((updatedUser) => {
-          Pic.deleteMany({ owner: profileId })
-          .then(() => res.status(200).json({ message: "Profile successfully deleted" }))
-      })
+      return Pic.deleteMany({ owner: profileId });
     })
+    .then(() => {
+      return User.findOneAndUpdate(
+        { _id: req.payload._id },
+        { $pull: { profiles: profileId } },
+        { new: true }
+      );
+    })
+    .then((updatedUser) => {
+      const { _id, email, profiles } = updatedUser
+      res.json({ _id, email, profiles })}
+    )
     .catch((err) => {
-      res.status(400).json({ message: "Something went wrong..." })
-    })
+      res.status(400).json({ message: "Something went wrong..." });
+    });
 });
 
 module.exports = router;

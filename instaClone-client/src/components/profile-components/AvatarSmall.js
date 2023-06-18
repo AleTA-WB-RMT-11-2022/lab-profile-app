@@ -1,6 +1,10 @@
 import { Link } from "react-router-dom";
+import { useContext } from "react";
+import { CurrentProfileContext } from "../../context/profile.context";
 
 function AvatarSmall( profile ) {
+
+  const {getCurrentProfile} = useContext(CurrentProfileContext)
 
     const imageStile = {
     width: "60px",
@@ -13,7 +17,7 @@ function AvatarSmall( profile ) {
 
     return (
         <Link
-        to={`/${profile._id}`}
+        onClick={() => {getCurrentProfile(profile._id)}}
         style={{ textDecoration: "none", color: "black", textAlign: "start" }}
       >
         <div style={imageStile}></div>

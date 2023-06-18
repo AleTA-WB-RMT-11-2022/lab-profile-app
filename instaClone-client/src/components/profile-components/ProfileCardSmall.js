@@ -1,6 +1,7 @@
 import AvatarSmall from "./AvatarSmall";
 
 function ProfileCardSmall(profile) {
+  
   return (
     <>
       <div>

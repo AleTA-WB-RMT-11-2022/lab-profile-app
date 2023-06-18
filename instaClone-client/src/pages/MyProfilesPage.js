@@ -7,7 +7,7 @@ import SummaryProfiles from "../components/profile-components/SummaryProfiles";
 function MyProfilesPage() {
   const [myProfiles, setMyProfiles] = useState([]);
   const [errorMessage, setErrorMessage] = useState(undefined);
-  const { isLoading, user } = useContext(AuthContext);
+  const { isLoading, user, setUser } = useContext(AuthContext);
   const storedToken = localStorage.getItem("authToken");
 
   const getMyProfiles = () => {
@@ -30,8 +30,9 @@ function MyProfilesPage() {
       .delete(`${process.env.REACT_APP_API_URL}/api/profiles/${profile_id}`, {
         headers: { Authorization: `Bearer ${storedToken}` },
       })
-      .then(() => {
+      .then((response) => {
         getMyProfiles()
+        setUser(response.data)
       })
       .catch((error) => {
         const errorDescription = error.response.data.message;

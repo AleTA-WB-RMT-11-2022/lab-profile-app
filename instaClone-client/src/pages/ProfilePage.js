@@ -32,6 +32,7 @@ function ProfilePage() {
       })
       .then((res) => {
         setProfile(res.data);
+        console.log('From ProfilePage', res.data)
       })
       .catch((error) => {
         const errorDescription = error.response.data.message;
@@ -62,6 +63,7 @@ const handleFollow = (myProfile) => {
     })
     .then((res) => {
       getProfile()
+      getProfiles()
     })
     .catch((error) => {
       const errorDescription = error.response.data.message;
@@ -122,7 +124,7 @@ const handleFollow = (myProfile) => {
         {profiles && 
           <div className="col-4">
             <h2>New profiles</h2>
-            <SummaryProfiles profiles={profiles} />
+            <SummaryProfiles profiles={profiles} displayedProfile={profileId} />
           </div>
         }
       </div>

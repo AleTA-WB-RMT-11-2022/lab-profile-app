@@ -6,7 +6,7 @@ function CreateProfile({ getMyProfiles }) {
   const [newProfile, setNewProfile] = useState({profileName: "", bio: "", avatar:"" });
   const [picLoading, setPicLoading] = useState(false);
   const [errorMessage, setErrorMessage] = useState(undefined);
-  const { isLoading } = useContext(AuthContext);
+  const { isLoading, setUser } = useContext(AuthContext);
   const storedToken = localStorage.getItem("authToken");
 
   // profile fields: profileName - bio - avatar
@@ -16,8 +16,9 @@ function CreateProfile({ getMyProfiles }) {
       .post(`${process.env.REACT_APP_API_URL}/api/profiles`, newProfile, {
         headers: { Authorization: `Bearer ${storedToken}` },
       })
-      .then(() => {
+      .then((response) => {
         setNewProfile({ profileName: "", bio: "" });
+        setUser(response.data)
         getMyProfiles();
       })
       .catch((error) => {

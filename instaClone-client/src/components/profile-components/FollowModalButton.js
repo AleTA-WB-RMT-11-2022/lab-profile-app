@@ -15,7 +15,7 @@ function FollowModalButton( {myProfile, handleFollow, followersArr} ){
   useEffect(() => {
     isFollower()
     // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [])
+  }, [follow])
 
     return(
         <>
