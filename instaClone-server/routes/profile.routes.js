@@ -18,22 +18,25 @@ router.post("/", isAuthenticated, (req, res, next) => {
       return Profile.create({
         ...cleanEmptyStringKeys(req.body),
         owner: req.payload._id,
-      });
-    })
-    .then((newProfile) => {
-      return User.findByIdAndUpdate(
-        req.payload._id,
-        { $push: { profiles: newProfile._id } },
-        { new: true }
-      );
-    })
-    .then((updatedUser) => {
-      const { _id, email, profiles } = updatedUser
-      res.json({ _id, email, profiles })
+      })
+        .then((newProfile) => {
+          console.log("step 2 line 25");
+          return User.findByIdAndUpdate(
+            req.payload._id,
+            { $push: { profiles: newProfile._id } },
+            { new: true }
+          );
+        })
+        .then((updatedUser) => {
+          console.log("step 3 line 33");
+          const { _id, email, profiles } = updatedUser;
+          res.json({ _id, email, profiles });
+        });
     })
     .catch((err) => {
       console.log("error creating profile", err);
       res.status(400).json({ message: "Profile not created" });
+      next(err);
     });
 });
 

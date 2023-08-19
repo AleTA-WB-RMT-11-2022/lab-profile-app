@@ -1,6 +1,6 @@
 const getHashtagsArray = (string) => {
     if(string){
-     return string
+     return string.toLowerCase()
       .split("#")
       .map((hash) => hash.trim())
       .filter((hash) => hash !== "");

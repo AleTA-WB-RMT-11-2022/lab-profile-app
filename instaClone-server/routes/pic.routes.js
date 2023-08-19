@@ -6,7 +6,7 @@ const { isAuthenticated } = require("../middleware/jwt.middleware");
 const getHashtagsArray = require("../utils/getHashtagsArray")
 const cleanEmptyStringKeys = require("../utils/cleanEmptyStringKeys")
 
-router.post("/pic/:profileId", isAuthenticated, (req, res, next) => {
+router.post("/:profileId", isAuthenticated, (req, res, next) => {
   const { profileId } = req.params;
 
   if (!mongoose.Types.ObjectId.isValid(profileId)) {
@@ -34,7 +34,7 @@ router.post("/pic/:profileId", isAuthenticated, (req, res, next) => {
     });
 });
 
-router.get("/pics/:profileId", isAuthenticated, (req, res, next) => {
+router.get("/:profileId", isAuthenticated, (req, res, next) => {
   const { profileId } = req.params;
 
   if (!mongoose.Types.ObjectId.isValid(profileId)) {

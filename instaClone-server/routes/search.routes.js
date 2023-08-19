@@ -7,10 +7,13 @@ const getHashtagsArray = require("../utils/getHashtagsArray")
 const cleanEmptyStringKeys = require("../utils/cleanEmptyStringKeys")
 
 
-router.get("/search", isAuthenticated, (req, res, next) => {
-    const {query} = req.query
-    console.log(req.query)
+router.get("/", isAuthenticated, (req, res, next) => {
+
+  Profile.find()
+    .then((result) => {
+      res.json(result);
+    })
     .catch((err) => console.log(`error searching`, err));
-})
+});
 
 module.exports = router;

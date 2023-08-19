@@ -21,13 +21,13 @@ app.use("/api", require("./routes/index.routes"));
 
 app.use("/auth", require("./routes/auth.routes"));
 
-app.use("/api", isAuthenticated, require("./routes/pic.routes"))
-
 app.use("/api/profiles", isAuthenticated, require("./routes/profile.routes"))
 
-app.use("/api", isAuthenticated, require("./routes/search.routes"))
+app.use("/api/pics", isAuthenticated, require("./routes/pic.routes"))
 
-app.use("/api", isAuthenticated, require("./routes/follower.routes"))
+app.use("/api/search", isAuthenticated, require("./routes/search.routes"))
+
+app.use("/api/follow", isAuthenticated, require("./routes/follower.routes"))
 
 // ❗ To handle errors. Routes that don't exist or errors that you handle in specific routes
 require("./error-handling")(app);
