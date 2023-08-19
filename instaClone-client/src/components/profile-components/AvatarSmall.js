@@ -18,6 +18,7 @@ function AvatarSmall( profile ) {
     return (
         <Link
         onClick={() => {getCurrentProfile(profile._id)}}
+        to={`/${profile._id}`}
         style={{ textDecoration: "none", color: "black", textAlign: "start" }}
       >
         <div style={imageStile}></div>

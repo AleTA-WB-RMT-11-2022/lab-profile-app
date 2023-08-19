@@ -6,15 +6,17 @@ import Navbar from "./components/Navbar";
 import HomePage from "./pages/HomePage";
 import ProfilePage from "./pages/ProfilePage";
 import MyProfilesPage from "./pages/MyProfilesPage";
+import SearchPage from "./pages/SearchPage"
 
 function App() {
   return (
-    <div className="App container m-0 mb-4">
+    <div className="App container">
       <Navbar />
       <Routes>
         <Route path="/" element={<HomePage />} />
         <Route path="/my-profiles" element={<MyProfilesPage />} />        
         <Route path="/:profileId" element={<ProfilePage />} />
+        <Route path="/search" element={<SearchPage />} />
       </Routes>
     </div>
   );

@@ -3,10 +3,8 @@ import { AuthContext } from "../../context/auth.context";
 import DeleteProfileButton from "./DeleteProfileButton";
 import ProfileCardSmall from "./ProfileCardSmall";
 
-function SummaryProfiles({ profiles, deleteProfile, displayedProfile }) {
+function SummaryProfiles({ profiles, deleteProfile}) {
   const { user } = useContext(AuthContext);
-
-  console.log('from summary', displayedProfile)
 
   return (
     <ul className="list-group">
@@ -15,8 +13,6 @@ function SummaryProfiles({ profiles, deleteProfile, displayedProfile }) {
           <li
             className="d-flex justify-content-between align-items-end list-group-item"
             key={profile._id}
-            data-attribute={(displayedProfile === profile._id) ? 'hidden' : ''}
-            hidden= {(displayedProfile === profile._id) ? "hidden" : ""}
           >
             <ProfileCardSmall {...profile} />
             {(user?._id === profile.owner) && (

@@ -1,9 +1,14 @@
-import { useState } from "react";
+import { useState, useContext } from "react";
 import axios from 'axios'
+import { AuthContext } from "../context/auth.context";
+import { useNavigate } from "react-router-dom";
 
 function Signup() {
   const [credentials, setCredentials] = useState({email:"", password:""});
   const [errorMessage, setErrorMessage] = useState(undefined);
+  const { storeToken, authenticateUser } = useContext(AuthContext);
+
+  const navigate = useNavigate()
 
   const handleChange = (event) => {
     const name = event.target.name;
@@ -15,8 +20,11 @@ function Signup() {
     e.preventDefault()
     axios
       .post(`${process.env.REACT_APP_API_URL}/auth/signup`, credentials)
-      .then(() => {
+      .then((res) => {
         setCredentials({})
+        storeToken(res.data.authToken)
+        authenticateUser()
+        navigate("/my-profiles")
       })
       .catch((error) => {
         const errorDescription = error.response.data.message;

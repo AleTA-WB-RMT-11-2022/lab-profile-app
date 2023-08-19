@@ -7,7 +7,7 @@ function AddPic({ profileId, getProfile }) {
   // const [pic, setPic] = useState(undefined);
   // const [hashtags, setHashtags] = useState('');
   // const [description, setDescription] = useState('');
-  const [item, setItem] = useState({})
+  const [item, setItem] = useState({});
   const [errorMessage, setErrorMessage] = useState(undefined);
   const { isLoading } = useContext(AuthContext);
   const storedToken = localStorage.getItem("authToken");
@@ -17,13 +17,13 @@ function AddPic({ profileId, getProfile }) {
 
     console.log("new ITEM ", item);
     axios
-      .post(`${process.env.REACT_APP_API_URL}/api/pic/${profileId}`, item, {
+      .post(`${process.env.REACT_APP_API_URL}/api/pics/${profileId}`, item, {
         headers: { Authorization: `Bearer ${storedToken}` },
       })
       .then(() => {
         getProfile();
         setErrorMessage(undefined);
-        setItem({description: '', hashtags: ''})
+        setItem({ description: "", hashtags: "" });
       })
       .catch((error) => {
         const errorDescription = error.response.data.message;
@@ -33,29 +33,24 @@ function AddPic({ profileId, getProfile }) {
 
   const handleChange = (e) => {
     e.preventDefault();
-    setErrorMessage(undefined)
-    const name = e.target.name
-    const value = e.target.value
-    setItem((values) => ({...values, [name]: value}))
-  }
+    setErrorMessage(undefined);
+    const name = e.target.name;
+    const value = e.target.value;
+    setItem((values) => ({ ...values, [name]: value }));
+  };
 
   if (isLoading) {
     return <p>loading</p>;
   }
 
   return (
-    <div className="row align-items-center ms-2">
-      <form
-        onSubmit={handleSubmit}
-        className="border mt-2 p-1 "
-        style={{ width: "50vh" }}
-      >
-        <div className="col-auto">
+    <div className="card align-items-center p-2" style={{ width: "20vw" }}>
+      <form onSubmit={handleSubmit}>
+
           <label className="form-label">
             <WidgetUpload setItem={setItem} />
           </label>
-        </div>
-        <div className="col-auto">
+
           <label className="form-label">
             Add a description
             <textarea
@@ -68,8 +63,6 @@ function AddPic({ profileId, getProfile }) {
               placeholder="My summer in..."
             />
           </label>
-        </div>
-        <div className="col-auto">
           <label className="form-label">
             ###What about###
             <textarea
@@ -90,9 +83,8 @@ function AddPic({ profileId, getProfile }) {
               alt={item.description}
             />
           )}
-        </div>
         {item.pic && (
-          <button type="submit" className="btn btn-dark">
+          <button type="submit" className="btn btn-dark d-block m-auto mt-2">
             Post
           </button>
         )}

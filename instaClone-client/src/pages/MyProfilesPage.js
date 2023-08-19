@@ -25,7 +25,6 @@ function MyProfilesPage() {
   };
 
   const deleteProfile = (profile_id) => {
-    console.log("delete", profile_id);
     axios
       .delete(`${process.env.REACT_APP_API_URL}/api/profiles/${profile_id}`, {
         headers: { Authorization: `Bearer ${storedToken}` },
