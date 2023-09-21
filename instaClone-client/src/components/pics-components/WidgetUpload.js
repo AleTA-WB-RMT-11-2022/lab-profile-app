@@ -19,6 +19,7 @@ function WidgetUpload({ setItem }) {
         }
       }
     );
+  // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
 
   const openWidget = (e) => {

@@ -1,6 +1,6 @@
 import { useContext } from "react";
 import { AuthContext } from "../../context/auth.context";
-//import { Link } from "react-router-dom";
+import { Link } from "react-router-dom";
 
 function PicsProfilePage({ pics }) {
   const { isLoading } = useContext(AuthContext);
@@ -9,7 +9,7 @@ function PicsProfilePage({ pics }) {
     height: "15vh",
     borderRadius: "6px",
     justifyContent: "space-evenly",
-    display: "block"
+    display: "block",
   };
 
   if (isLoading) {
@@ -18,20 +18,29 @@ function PicsProfilePage({ pics }) {
 
   return (
     <>
-      {pics && pics.map((pic) => {
-        return (
-          <div key={pic._id} className="col col-2 p-1 text-start">
+      {pics &&
+        pics.map((pic) => {
+          return (
+            <div key={pic._id} className="col col-2 p-1 text-start">
               <p>❤️ {pic.likes.length}</p>
               <img src={pic.pic} alt={pic.description} style={picsStyle} />
-              {pic.hashtags.map((hashtag) => {
-                  return (<>
-                    <a href="/search" key={hashtag}>#{hashtag} </a>{" "}
-                  </>)
+              {pic.hashtags.map((hashtag, index) => {
+                const searchParam = "hashtags";
+                return (
+                  <Link
+                    to={`/search/${searchParam}`}
+                    onClick={() =>
+                      localStorage.setItem("hashtag", `${hashtag}`)
+                    }
+                    key={index}
+                  >
+                    #{hashtag}{" "}
+                  </Link>
+                );
               })}
-            
-          </div>
-        );
-      })}
+            </div>
+          );
+        })}
     </>
   );
 }

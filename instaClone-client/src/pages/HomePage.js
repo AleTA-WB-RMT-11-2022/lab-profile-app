@@ -2,6 +2,7 @@ import { useContext, useState } from "react";
 import { AuthContext } from "../context/auth.context";
 import Login from "../components/Login";
 import Signup from "../components/Signup";
+import LoginButton from "../components/passport/LoginButton"
 
 function HomePage() {
   const [toggler, setToggler] = useState(true);
@@ -13,9 +14,11 @@ function HomePage() {
 
   return (
     <div className="HomePage row">
+    <LoginButton />
       {!isLoggedIn && (
         <>
           <h1 className="mt-4">ALE INSTA CLONE</h1>
+          
           {toggler ? (
             <div className="col col-4">
               <Login />

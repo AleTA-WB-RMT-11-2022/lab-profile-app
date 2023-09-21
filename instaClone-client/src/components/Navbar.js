@@ -24,7 +24,6 @@ function Navbar() {
   };
 
   useEffect(() => {
-    console.log("NAvbar", currentProfile);
   }, [currentProfile])
 
   return (
@@ -73,7 +72,7 @@ function Navbar() {
               </li>
 
               <li className="nav-item">
-                <NavLink to="/search" className="nav-link me-3">
+                <NavLink to="/search/profileName" className="nav-link me-3">
                   🔍
                 </NavLink>
               </li>

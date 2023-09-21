@@ -16,7 +16,7 @@ function App() {
         <Route path="/" element={<HomePage />} />
         <Route path="/my-profiles" element={<MyProfilesPage />} />        
         <Route path="/:profileId" element={<ProfilePage />} />
-        <Route path="/search" element={<SearchPage />} />
+        <Route path="/search/:searchParam" element={<SearchPage />} />
       </Routes>
     </div>
   );
